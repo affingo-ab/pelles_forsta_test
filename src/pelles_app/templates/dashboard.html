@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Pelles Första Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: sans-serif; background: #f8f9fa; margin: 0; padding: 2rem; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .btn-group { display: flex; gap: 1rem; align-items: center; }
+        .container { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #dee2e6; }
+        th { background-color: #f1f3f5; }
+        tr:hover { background-color: #f8f9fa; }
+        .btn { padding: 8px 16px; text-decoration: none; border-radius: 4px; color: white; cursor: pointer; border: none; }
+        .manage-btn { background: #28a745; }
+        .manage-btn:hover { background: #218838; }
+        .logout-btn { background: #dc3545; }
+        .logout-btn:hover { background: #c82333; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Välkommen Pelle, här är din Dashboard!</h1>
+        <div class="btn-group">
+            <a href="/manage" class="btn manage-btn">Hantera dataset</a>
+            <a href="/logout" class="btn logout-btn">Logga ut</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Stapeldiagram -->
+        <div class="card">
+            <h3>Värdeöversikt per person</h3>
+            <canvas id="valueChart"></canvas>
+        </div>
+
+        <!-- Tabell -->
+        <div class="card">
+            <h3>Dataset-tabell</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Namn</th>
+                        <th>Värde</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data %}
+                    <tr>
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.value }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('valueChart').getContext('2d');
+        const chartData = {
+            labels: [{% for row in data %}'{{ row.name }}', {% endfor %}],
+            datasets: [{
+                label: 'Värde',
+                data: [{% for row in data %}{{ row.value }}, {% endfor %}],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(75, 192, 192, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(75, 192, 192, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: chartData,
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
