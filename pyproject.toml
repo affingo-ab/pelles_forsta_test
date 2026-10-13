@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pelles_app"
+version = "0.1.0"
+description = "Enkel inloggning och dynamisk HTML-dashboard i Python"
+dependencies = [
+    "flask>=3.0.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0.0",
+]
