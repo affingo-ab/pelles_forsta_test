@@ -1,0 +1,7 @@
+{
+  "items": [
+    {"name": "Pelle", "value": 100},
+    {"name": "Markus", "value": 200},
+    {"name": "Johannes", "value": 300}
+  ]
+}
